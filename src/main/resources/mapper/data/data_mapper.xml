@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.cqupt.bigdata.RiskFactorExcavation.dao.data.DataMapper">
+    <update id="createTable" parameterType="com.edu.cqupt.bigdata.RiskFactorExcavation.service.request.table.TableCreateRequest">
+        create table ${request.dataName}(
+        ${request.dataName}_id int primary key auto_increment,
+        <foreach collection="request.tableColumns" item="column" separator=",">
+            ${column.columnName}  ${column.columnType}
+        </foreach>
+        )
+    </update>
+
+    <update id="loadTata" parameterType="com.edu.cqupt.bigdata.RiskFactorExcavation.service.request.table.TableCreateRequest">
+        LOAD DATA INFILE #{request.tableFilePath} INTO TABLE ${request.dataName}
+        FIELDS TERMINATED BY ','(
+        <foreach collection="request.tableColumns" item="column" separator=",">
+            ${column.columnName}
+        </foreach>
+        )
+    </update>
+</mapper>
